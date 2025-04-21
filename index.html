@@ -10,8 +10,11 @@
 .volume-widget {
   width: 170px;
   height: 32px;
-  position: relative;
-  background: transparent;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  line-height: 0; /* czasem pomaga wyzerować wewnętrzne spacingi */
 }
 
 /* Kreski volume */
