@@ -1,0 +1,66 @@
+<div class="volume-widget">
+  <input type="range" min="0" max="100" value="0" class="slider" id="volumeSlider" />
+  <div class="bars" id="volumeBars"></div>
+</div>
+
+<style>
+.volume-widget {
+  width: 170px;
+  height: 32px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  position: absolute;
+  width: 100%;
+  height: 32px;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.bars {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 4px;
+  gap: 2px;
+  z-index: 1;
+}
+
+.bars div {
+  width: 4px;
+  background-color: #ccc;
+  transition: 0.2s;
+  border-radius: 2px;
+}
+</style>
+
+<script>
+const slider = document.getElementById('volumeSlider');
+const barsContainer = document.getElementById('volumeBars');
+
+const barCount = 20;
+for (let i = 1; i <= barCount; i++) {
+  const bar = document.createElement('div');
+  bar.style.height = `${(i / barCount) * 100}%`;
+  barsContainer.appendChild(bar);
+}
+
+slider.addEventListener('input', () => {
+  const value = parseInt(slider.value);
+  const bars = barsContainer.children;
+  const activeBars = Math.round((value / 100) * barCount);
+  for (let i = 0; i < barCount; i++) {
+    if (i < activeBars) {
+      bars[i].style.backgroundColor = value === 100 ? 'orange' : 'limegreen';
+    } else {
+      bars[i].style.backgroundColor = '#ccc';
+    }
+  }
+});
+</script>
