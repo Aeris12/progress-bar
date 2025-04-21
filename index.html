@@ -1,6 +1,6 @@
 <div class="volume-widget">
-  <input type="range" min="0" max="100" value="0" class="slider" id="volumeSlider" />
   <div class="bars" id="volumeBars"></div>
+  <input type="range" min="0" max="100" value="10" class="slider" id="volumeSlider" />
 </div>
 
 <style>
@@ -8,19 +8,9 @@
   width: 170px;
   height: 32px;
   position: relative;
+  background: transparent;
   display: flex;
   align-items: center;
-  /* background: #f0f0f0; <- NIE używaj tego */
-  background: transparent; /* <- albo po prostu nie dodawaj */
-}
-
-.slider {
-  position: absolute;
-  width: 100%;
-  height: 32px;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 2;
 }
 
 .bars {
@@ -29,16 +19,27 @@
   height: 100%;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 4px;
-  gap: 2px;
-  z-index: 1;
+  padding: 4px 0;
+  pointer-events: none; /* żeby kliknięcia przechodziły do suwaka */
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .bars div {
-  width: 4px;
+  width: 5px;
+  border-radius: 1px;
   background-color: #ccc;
   transition: 0.2s;
-  border-radius: 2px;
+}
+
+.slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 2;
+  cursor: pointer;
 }
 </style>
 
@@ -47,9 +48,11 @@ const slider = document.getElementById('volumeSlider');
 const barsContainer = document.getElementById('volumeBars');
 
 const barCount = 20;
+const maxHeight = 28; // max wysokość kreski
 for (let i = 1; i <= barCount; i++) {
   const bar = document.createElement('div');
-  bar.style.height = `${(i / barCount) * 100}%`;
+  const height = 4 + ((i / barCount) * (maxHeight - 4)); // narastająca wysokość
+  bar.style.height = `${height}px`;
   barsContainer.appendChild(bar);
 }
 
@@ -61,8 +64,11 @@ slider.addEventListener('input', () => {
     if (i < activeBars) {
       bars[i].style.backgroundColor = value === 100 ? 'orange' : 'limegreen';
     } else {
-      bars[i].style.backgroundColor = '#ccc';
+      bars[i].style.backgroundColor = '#ddd';
     }
   }
 });
+
+// Zainicjuj kolory na starcie
+slider.dispatchEvent(new Event('input'));
 </script>
